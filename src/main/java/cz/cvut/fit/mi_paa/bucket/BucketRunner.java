@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.management.ManagementFactory;
 
+import cz.cvut.fit.mi_paa.bucket.result.Result;
+
 public class BucketRunner {
 	public static void main(String[] args) {
 		long startCpu = getCpuTime();
@@ -39,6 +41,8 @@ public class BucketRunner {
 
 	private static void solveBucketInstance(BucketInstance instance) {
 		System.out.println(instance);
+		Result result = instance.solveBruteForce();
+		System.out.println(result);
 	}
 
 	private static void help(String message) {

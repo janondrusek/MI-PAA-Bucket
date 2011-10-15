@@ -5,7 +5,8 @@ import cz.cvut.fit.mi_paa.bucket.resolver.HeuristicResolver;
 import cz.cvut.fit.mi_paa.bucket.resolver.Resolver;
 import cz.cvut.fit.mi_paa.bucket.result.Result;
 
-final public class BucketInstance {
+final public class BucketInstance implements Cloneable {
+
 	final private int id;
 
 	final private int numOfBuckets;
@@ -13,44 +14,49 @@ final public class BucketInstance {
 	final private Bucket[] buckets;
 
 	public BucketInstance(String[] chunks) {
-		id = getInt(chunks[0]);
-		numOfBuckets = getInt(chunks[1]);
-		buckets = getBuckets(chunks);
+		this(getInt(chunks[0]), getInt(chunks[1]), getBuckets(getInt(chunks[1]), chunks));
 	}
 
-	private int getInt(String value) {
+	private static int getInt(String value) {
 		return Integer.parseInt(value);
 	}
 
-	private Bucket[] getBuckets(String[] chunks) {
-		Bucket[] buckets = new Bucket[getNumOfBuckets()];
-		for (int i = 0; i < getNumOfBuckets(); i++) {
-			buckets[i] = getBucket(i, chunks);
+	private BucketInstance(int id, int numOfBuckets, Bucket[] buckets) {
+		this.id = id;
+		this.numOfBuckets = numOfBuckets;
+		this.buckets = buckets;
+	}
+
+	private static Bucket[] getBuckets(int numOfBuckets, String[] chunks) {
+		Bucket[] buckets = new Bucket[numOfBuckets];
+		for (int i = 0; i < numOfBuckets; i++) {
+			buckets[i] = getBucket(i, numOfBuckets, chunks);
 		}
 		return buckets;
 	}
 
-	private Bucket getBucket(int i, String[] chunks) {
-		return new Bucket(getCapacity(i, chunks), getVolume(i, chunks), getTarget(i, chunks));
+	private static Bucket getBucket(int i, int numOfBuckets, String[] chunks) {
+		return new Bucket(getCapacity(i, numOfBuckets, chunks), getVolume(i, numOfBuckets, chunks), getTarget(i,
+				numOfBuckets, chunks));
 	}
 
-	private int getCapacity(int i, String[] chunks) {
+	private static int getCapacity(int i, int numOfBuckets, String[] chunks) {
 		return getInt(getChunk(i, chunks));
 	}
 
-	private int getVolume(int i, String[] chunks) {
-		return getInt(getChunk(i + getNumOfBuckets(), chunks));
+	private static int getVolume(int i, int numOfBuckets, String[] chunks) {
+		return getInt(getChunk(i + numOfBuckets, chunks));
 	}
 
-	private int getTarget(int i, String[] chunks) {
-		return getInt(getChunk(i + 2 * getNumOfBuckets(), chunks));
+	private static int getTarget(int i, int numOfBuckets, String[] chunks) {
+		return getInt(getChunk(i + 2 * numOfBuckets, chunks));
 	}
 
-	private String getChunk(int i, String[] chunks) {
+	private static String getChunk(int i, String[] chunks) {
 		return getChunk(2, i, chunks);
 	}
 
-	private String getChunk(int offset, int i, String[] chunks) {
+	private static String getChunk(int offset, int i, String[] chunks) {
 		return chunks[offset + i];
 	}
 
@@ -60,6 +66,15 @@ final public class BucketInstance {
 
 	public int getNumOfBuckets() {
 		return numOfBuckets;
+	}
+
+	public boolean isFinished() {
+		for (Bucket bucket : getBuckets()) {
+			if (!bucket.isFinished()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public Bucket[] getBuckets() {
@@ -76,6 +91,28 @@ final public class BucketInstance {
 
 	private Result solve(Resolver resolver) {
 		return resolver.solve();
+	}
+
+	@Override
+	public BucketInstance clone() {
+		Bucket[] buckets = new Bucket[this.getNumOfBuckets()];
+
+		for (int i = 0; i < getNumOfBuckets(); i++) {
+			buckets[i] = getBuckets()[i].clone();
+		}
+
+		return new BucketInstance(getId(), getNumOfBuckets(), buckets);
+	}
+
+	public String getIdentifier() {
+		StringBuffer code = new StringBuffer();
+
+		for (int i = 1; i <= getNumOfBuckets(); i++) {
+			code.append(i);
+			code.append(getBuckets()[i - 1].getVolume());
+		}
+
+		return code.toString();
 	}
 
 	@Override

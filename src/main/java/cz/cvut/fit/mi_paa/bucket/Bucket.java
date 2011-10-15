@@ -1,6 +1,6 @@
 package cz.cvut.fit.mi_paa.bucket;
 
-final public class Bucket {
+final public class Bucket implements Cloneable {
 
 	final private int capacity;
 
@@ -19,27 +19,37 @@ final public class Bucket {
 	}
 
 	public void pour(int volume) {
-		this.volume = volume;
+		if (getVolume() + volume > getCapacity()) {
+			this.volume = getCapacity();
+		} else if (getVolume() + volume < 0) {
+			empty();
+		} else {
+			this.volume += volume;
+		}
 	}
 
 	public void empty() {
-		pour(0);
+		this.volume = 0;
+	}
+
+	public boolean isNotEmpty() {
+		return !isEmpty();
 	}
 
 	public boolean isEmpty() {
-		return !isFull();
-	}
-
-	public boolean isNotFinished() {
-		return !isFinished();
+		return getVolume() == 0;
 	}
 
 	public boolean isFinished() {
-		return volume == target;
+		return getVolume() == getTarget();
+	}
+
+	public boolean isNotFull() {
+		return !isFull();
 	}
 
 	public boolean isFull() {
-		return volume == capacity;
+		return getVolume() == getCapacity();
 	}
 
 	public int getCapacity() {
@@ -52,6 +62,11 @@ final public class Bucket {
 
 	public int getVolume() {
 		return volume;
+	}
+
+	@Override
+	public Bucket clone() {
+		return new Bucket(getCapacity(), getVolume(), getTarget());
 	}
 
 	@Override
