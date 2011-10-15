@@ -1,5 +1,10 @@
 package cz.cvut.fit.mi_paa.bucket;
 
+import cz.cvut.fit.mi_paa.bucket.resolver.BruteForceResolver;
+import cz.cvut.fit.mi_paa.bucket.resolver.HeuristicResolver;
+import cz.cvut.fit.mi_paa.bucket.resolver.Resolver;
+import cz.cvut.fit.mi_paa.bucket.result.Result;
+
 final public class BucketInstance {
 	final private int id;
 
@@ -59,6 +64,18 @@ final public class BucketInstance {
 
 	public Bucket[] getBuckets() {
 		return buckets;
+	}
+
+	public Result solveBruteForce() {
+		return solve(new BruteForceResolver(this));
+	}
+
+	public Result solveHeuristic() {
+		return solve(new HeuristicResolver(this));
+	}
+
+	private Result solve(Resolver resolver) {
+		return resolver.solve();
 	}
 
 	@Override
