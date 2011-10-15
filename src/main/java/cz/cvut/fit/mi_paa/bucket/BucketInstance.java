@@ -13,18 +13,25 @@ final public class BucketInstance implements Cloneable {
 
 	final private Bucket[] buckets;
 
+	private int ancestor;
+
 	public BucketInstance(String[] chunks) {
-		this(getInt(chunks[0]), getInt(chunks[1]), getBuckets(getInt(chunks[1]), chunks));
+		this(getInt(chunks[0]), getInt(chunks[1]), chunks);
+	}
+
+	private BucketInstance(int id, int numOfBuckets, String[] chunks) {
+		this(id, numOfBuckets, 0, getBuckets(numOfBuckets, chunks));
+	}
+
+	private BucketInstance(int id, int numOfBuckets, int ancestor, Bucket[] buckets) {
+		this.id = id;
+		this.numOfBuckets = numOfBuckets;
+		this.buckets = buckets;
+		this.ancestor = ancestor;
 	}
 
 	private static int getInt(String value) {
 		return Integer.parseInt(value);
-	}
-
-	private BucketInstance(int id, int numOfBuckets, Bucket[] buckets) {
-		this.id = id;
-		this.numOfBuckets = numOfBuckets;
-		this.buckets = buckets;
 	}
 
 	private static Bucket[] getBuckets(int numOfBuckets, String[] chunks) {
@@ -68,6 +75,14 @@ final public class BucketInstance implements Cloneable {
 		return numOfBuckets;
 	}
 
+	public int getAncestor() {
+		return ancestor;
+	}
+
+	public Bucket[] getBuckets() {
+		return buckets;
+	}
+
 	public boolean isFinished() {
 		for (Bucket bucket : getBuckets()) {
 			if (!bucket.isFinished()) {
@@ -75,10 +90,6 @@ final public class BucketInstance implements Cloneable {
 			}
 		}
 		return true;
-	}
-
-	public Bucket[] getBuckets() {
-		return buckets;
 	}
 
 	public Result solveBruteForce() {
@@ -100,8 +111,7 @@ final public class BucketInstance implements Cloneable {
 		for (int i = 0; i < getNumOfBuckets(); i++) {
 			buckets[i] = getBuckets()[i].clone();
 		}
-
-		return new BucketInstance(getId(), getNumOfBuckets(), buckets);
+		return new BucketInstance(getId(), getNumOfBuckets(), getAncestor() + 1, buckets);
 	}
 
 	public String getIdentifier() {
@@ -123,6 +133,8 @@ final public class BucketInstance implements Cloneable {
 		sb.append(getId());
 		sb.append(", numOfBuckets: ");
 		sb.append(getNumOfBuckets());
+		sb.append(", ancestor: ");
+		sb.append(getAncestor());
 		sb.append(", buckets[");
 		for (int i = 0; i < getNumOfBuckets(); i++) {
 			sb.append(getBuckets()[i]);
