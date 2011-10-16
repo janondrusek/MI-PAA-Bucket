@@ -3,20 +3,22 @@ package cz.cvut.fit.mi_paa.bucket.comparator;
 import cz.cvut.fit.mi_paa.bucket.Bucket;
 import cz.cvut.fit.mi_paa.bucket.BucketInstance;
 
-public class EuclidHeuristicComparator extends AbstractHeuristicComparator {
+public class FinishedBucketsHeuristicComparator extends AbstractHeuristicComparator {
 
 	@Override
 	protected int getScore(BucketInstance instance) {
 		int score = 0;
 		for (Bucket bucket : instance.getBuckets()) {
-			score += (bucket.getTarget() - bucket.getVolume());
+			if (bucket.isFinished()) {
+				score++;
+			}
 		}
 		return score;
 	}
 
 	@Override
 	protected int getResult(int left, int right) {
-		return left - right;
+		return right - left;
 	}
 
 }

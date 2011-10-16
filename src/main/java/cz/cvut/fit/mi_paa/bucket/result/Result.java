@@ -35,8 +35,8 @@ public class Result {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append("[");
-		sb.append("resolver: ");
-		sb.append(resolver.getClass().getName());
+		sb.append("resolver");
+		sb.append(resolver);
 		sb.append(", visitedVertices: ");
 		sb.append(getVisitedVertices());
 		sb.append(", bucketInstance");

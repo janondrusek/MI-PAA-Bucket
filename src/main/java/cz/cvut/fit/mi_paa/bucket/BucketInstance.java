@@ -1,8 +1,5 @@
 package cz.cvut.fit.mi_paa.bucket;
 
-import cz.cvut.fit.mi_paa.bucket.comparator.EuclidHeuristicComparator;
-import cz.cvut.fit.mi_paa.bucket.resolver.BruteForceResolver;
-import cz.cvut.fit.mi_paa.bucket.resolver.HeuristicResolver;
 import cz.cvut.fit.mi_paa.bucket.resolver.Resolver;
 import cz.cvut.fit.mi_paa.bucket.result.Result;
 
@@ -93,12 +90,12 @@ final public class BucketInstance implements Cloneable {
 		return true;
 	}
 
-	public Result solveBruteForce() {
-		return solve(new BruteForceResolver(this));
-	}
-
-	public Result solveEuclidDistanceHeuristic() {
-		return solve(new HeuristicResolver<>(EuclidHeuristicComparator.class, this));
+	public Result[] solve(Resolver[] resolvers) {
+		Result[] results = new Result[resolvers.length];
+		for (int i = 0; i < resolvers.length; i++) {
+			results[i] = solve(resolvers[i]);
+		}
+		return results;
 	}
 
 	private Result solve(Resolver resolver) {

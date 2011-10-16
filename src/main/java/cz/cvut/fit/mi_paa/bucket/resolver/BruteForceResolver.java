@@ -16,4 +16,9 @@ public class BruteForceResolver extends AbstractResolver {
 		return new LinkedList<>();
 	}
 
+	@Override
+	public String toString() {
+		return "[" + getClass().getName() + "]";
+	}
+
 }

@@ -5,6 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.management.ManagementFactory;
 
+import cz.cvut.fit.mi_paa.bucket.comparator.EuclidHeuristicComparator;
+import cz.cvut.fit.mi_paa.bucket.comparator.FinishedBucketsHeuristicComparator;
+import cz.cvut.fit.mi_paa.bucket.resolver.BruteForceResolver;
+import cz.cvut.fit.mi_paa.bucket.resolver.HeuristicResolver;
+import cz.cvut.fit.mi_paa.bucket.resolver.Resolver;
 import cz.cvut.fit.mi_paa.bucket.result.Result;
 
 public class BucketRunner {
@@ -42,10 +47,13 @@ public class BucketRunner {
 
 	private static void solveBucketInstance(BucketInstance instance) {
 		System.out.println(instance);
-		Result result = instance.solveBruteForce();
-		System.out.println(result);
-		result = instance.solveEuclidDistanceHeuristic();
-		System.out.println(result);
+
+		Resolver[] resolvers = { new BruteForceResolver(instance),
+				new HeuristicResolver<>(EuclidHeuristicComparator.class, instance),
+				new HeuristicResolver<>(FinishedBucketsHeuristicComparator.class, instance) };
+		for (Result result : instance.solve(resolvers)) {
+			System.out.println(result);
+		}
 	}
 
 	private static void help(String message) {

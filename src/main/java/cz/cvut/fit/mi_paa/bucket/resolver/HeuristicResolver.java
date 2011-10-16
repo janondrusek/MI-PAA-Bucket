@@ -33,4 +33,9 @@ public class HeuristicResolver<T extends AbstractHeuristicComparator> extends Ab
 		}
 		return comparator;
 	}
+
+	@Override
+	public String toString() {
+		return "[" + getClass().getName() + ", comparator: " + clazz.getName() + "]";
+	}
 }

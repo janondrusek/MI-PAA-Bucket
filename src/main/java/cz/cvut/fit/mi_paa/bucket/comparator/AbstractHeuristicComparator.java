@@ -13,14 +13,7 @@ public abstract class AbstractHeuristicComparator implements Comparator<BucketIn
 		return getResult(leftScore, rightScore);
 	}
 
-	private int getResult(int left, int right) {
-		if (left < right) {
-			return -1;
-		} else if (left > right) {
-			return 1;
-		}
-		return 0;
-	}
+	abstract protected int getResult(int left, int right);
 
 	abstract protected int getScore(BucketInstance instance);
 
