@@ -1,16 +1,22 @@
 package cz.cvut.fit.mi_paa.bucket.resolver;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import org.apache.commons.lang3.reflect.ConstructorUtils;
+
 import cz.cvut.fit.mi_paa.bucket.BucketInstance;
-import cz.cvut.fit.mi_paa.bucket.comparator.EuklidHeuristicComparator;
+import cz.cvut.fit.mi_paa.bucket.comparator.AbstractHeuristicComparator;
 
-public class HeuristicResolver extends AbstractResolver {
+public class HeuristicResolver<T extends AbstractHeuristicComparator> extends AbstractResolver {
 
-	public HeuristicResolver(BucketInstance instance) {
+	private Class<T> clazz;
+
+	public HeuristicResolver(Class<T> clazz, BucketInstance instance) {
 		super(instance);
+		this.clazz = clazz;
 	}
 
 	@Override
@@ -19,7 +25,12 @@ public class HeuristicResolver extends AbstractResolver {
 	}
 
 	private Comparator<BucketInstance> getComparator() {
-		return new EuklidHeuristicComparator<BucketInstance>();
+		T comparator = null;
+		try {
+			comparator = ConstructorUtils.invokeConstructor(clazz);
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+			e.printStackTrace();
+		}
+		return comparator;
 	}
-
 }

@@ -19,13 +19,13 @@ public abstract class AbstractResolver implements Resolver {
 
 	public AbstractResolver(BucketInstance instance) {
 		this.instance = instance;
-		enqueued = createQueque();
 	}
 
 	abstract protected Queue<BucketInstance> createQueque();
 
 	@Override
 	public Result solve() {
+		enqueued = createQueque();
 		enqueue(getBucketInstance());
 		doBFS();
 

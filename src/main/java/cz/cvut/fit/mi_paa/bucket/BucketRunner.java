@@ -44,7 +44,7 @@ public class BucketRunner {
 		System.out.println(instance);
 		Result result = instance.solveBruteForce();
 		System.out.println(result);
-		result = instance.solveHeuristic();
+		result = instance.solveEuclidDistanceHeuristic();
 		System.out.println(result);
 	}
 
