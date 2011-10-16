@@ -31,6 +31,7 @@ public class BucketRunner {
 				break;
 			}
 		}
+		bucketReader.close();
 		return instance;
 	}
 
@@ -42,6 +43,8 @@ public class BucketRunner {
 	private static void solveBucketInstance(BucketInstance instance) {
 		System.out.println(instance);
 		Result result = instance.solveBruteForce();
+		System.out.println(result);
+		result = instance.solveHeuristic();
 		System.out.println(result);
 	}
 

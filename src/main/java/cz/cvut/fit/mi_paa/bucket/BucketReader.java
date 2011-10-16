@@ -3,6 +3,7 @@ package cz.cvut.fit.mi_paa.bucket;
 import java.io.BufferedReader;
 import java.util.Iterator;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class BucketReader implements Iterator<BucketInstance> {
@@ -37,6 +38,10 @@ public class BucketReader implements Iterator<BucketInstance> {
 	@Override
 	public void remove() {
 
+	}
+
+	public void close() {
+		IOUtils.closeQuietly(br);
 	}
 
 }

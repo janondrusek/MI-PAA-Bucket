@@ -1,20 +1,17 @@
 package cz.cvut.fit.mi_paa.bucket.result;
 
 import cz.cvut.fit.mi_paa.bucket.BucketInstance;
+import cz.cvut.fit.mi_paa.bucket.resolver.Resolver;
 
 public class Result {
-	private long manipulations;
-
 	private long visitedVertices;
 
 	private BucketInstance instance;
 
-	public void incrementManipulations() {
-		manipulations++;
-	}
+	private Resolver resolver;
 
-	public long getManipulations() {
-		return manipulations;
+	public Result(Resolver resolver) {
+		this.resolver = resolver;
 	}
 
 	public void incremenVisitedtVertices() {
@@ -38,8 +35,8 @@ public class Result {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append("[");
-		sb.append("manipulations: ");
-		sb.append(getManipulations());
+		sb.append("resolver: ");
+		sb.append(resolver.getClass().getName());
 		sb.append(", visitedVertices: ");
 		sb.append(getVisitedVertices());
 		sb.append(", bucketInstance");

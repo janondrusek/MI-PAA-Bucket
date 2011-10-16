@@ -5,7 +5,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import cz.cvut.fit.mi_paa.bucket.BucketInstance;
-import cz.cvut.fit.mi_paa.bucket.result.Result;
+import cz.cvut.fit.mi_paa.bucket.comparator.EuklidHeuristicComparator;
 
 public class HeuristicResolver extends AbstractResolver {
 
@@ -19,14 +19,7 @@ public class HeuristicResolver extends AbstractResolver {
 	}
 
 	private Comparator<BucketInstance> getComparator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Result solve() {
-		// TODO Auto-generated method stub
-		return null;
+		return new EuklidHeuristicComparator<BucketInstance>();
 	}
 
 }
