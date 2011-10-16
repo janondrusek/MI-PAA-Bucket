@@ -11,7 +11,7 @@ final public class BucketInstance implements Cloneable {
 
 	final private Bucket[] buckets;
 
-	private int ancestor;
+	final private int ancestor;
 
 	public BucketInstance(String[] chunks) {
 		this(getInt(chunks[0]), getInt(chunks[1]), chunks);
